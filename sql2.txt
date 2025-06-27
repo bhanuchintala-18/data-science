@@ -1,0 +1,407 @@
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.42 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases
+    -> show databases;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'show databases' at line 2
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| bhanu              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.15 sec)
+
+mysql> use bhanu;
+Database changed
+mysql> select * from bhanu;
+ERROR 1146 (42S02): Table 'bhanu.bhanu' doesn't exist
+mysql> show tables;
++-----------------+
+| Tables_in_bhanu |
++-----------------+
+| customers       |
+| emp             |
+| student         |
++-----------------+
+3 rows in set (0.03 sec)
+
+mysql> select * from customers;
++----+----------+-----------+--------+------+
+| id | Name     | Address   | Salary | age  |
++----+----------+-----------+--------+------+
+|  1 | Ramesh   | Ahmedabad |   2000 |   32 |
+|  2 | Khilan   | Delhi     |   1500 |   25 |
+|  3 | Kaushik  | Kota      |   2000 |   23 |
+|  4 | Chaitali | Mumbai    |   6500 |   25 |
+|  5 | Hardik   | Bhopal    |   8500 |   27 |
+|  6 | Komal    | MP        |   4500 |   22 |
+|  7 | Muffy    | Indore    |  10000 |   24 |
++----+----------+-----------+--------+------+
+7 rows in set (0.45 sec)
+
+mysql>  SELECT * FROM CUSTOMERS
+    -> WHERE AGE > ANY (SELECT AGE FROM CUSTOMERS WHERE SALARY > 6500);
++----+----------+-----------+--------+------+
+| id | Name     | Address   | Salary | age  |
++----+----------+-----------+--------+------+
+|  1 | Ramesh   | Ahmedabad |   2000 |   32 |
+|  2 | Khilan   | Delhi     |   1500 |   25 |
+|  4 | Chaitali | Mumbai    |   6500 |   25 |
+|  5 | Hardik   | Bhopal    |   8500 |   27 |
++----+----------+-----------+--------+------+
+4 rows in set (0.00 sec)
+
+mysql>  SELECT (15 + 6) AS ADDITION
+    ->  SELECT (15 + 6) AS ADDITION;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT (15 + 6) AS ADDITION' at line 2
+mysql>  SELECT (15 + 6) AS ADDITION;
++----------+
+| ADDITION |
++----------+
+|       21 |
++----------+
+1 row in set (0.00 sec)
+
+mysql>  SELECT COUNT AS "RECORDS" FROM CUSTOMERS;
+ERROR 1054 (42S22): Unknown column 'COUNT' in 'field list'
+mysql>  SELECT COUNT(*) AS "RECORDS" FROM CUSTOMERS;
++---------+
+| RECORDS |
++---------+
+|       7 |
++---------+
+1 row in set (0.01 sec)
+
+mysql> SELECT CURRENT_TIMESTAMP;
++---------------------+
+| CURRENT_TIMESTAMP   |
++---------------------+
+| 2025-06-27 14:04:43 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT  GETDATE();
+ERROR 1305 (42000): FUNCTION bhanu.GETDATE does not exist
+mysql>
+mysql> SELECT  GETDATE();;
+ERROR 1305 (42000): FUNCTION bhanu.GETDATE does not exist
+ERROR:
+No query specified
+
+mysql> SELECT GETDATE();
+ERROR 1305 (42000): FUNCTION bhanu.GETDATE does not exist
+mysql> SELECT NOW();
++---------------------+
+| NOW()               |
++---------------------+
+| 2025-06-27 14:08:08 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> create table employee_table(
+    -> id int auto_increment primary key,
+    -> name varchar(30),
+    -> work_date date,
+    -> daily_typing_pages int
+    -> );
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_bhanu |
++-----------------+
+| customers       |
+| emp             |
+| employee_table  |
+| student         |
++-----------------+
+4 rows in set (0.00 sec)
+
+mysql> desc employee_table;
++--------------------+-------------+------+-----+---------+----------------+
+| Field              | Type        | Null | Key | Default | Extra          |
++--------------------+-------------+------+-----+---------+----------------+
+| id                 | int         | NO   | PRI | NULL    | auto_increment |
+| name               | varchar(30) | YES  |     | NULL    |                |
+| work_date          | date        | YES  |     | NULL    |                |
+| daily_typing_pages | int         | YES  |     | NULL    |                |
++--------------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.03 sec)
+
+mysql> insert into employee_table(name,work_date,daily_typing_pages)
+    -> values
+    -> ( John | 2007-01-24 |
+    -> ( John | 2007-01-24 |
+    ->
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 4
+mysql> insert into employee_table(name,work_date,daily_typing_pages)
+    -> values
+    -> ('john','2007-01-24',250),
+    -> ('john','2007-01-24',250 Ram  | 2007-05-27 |                ),
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Ram  | 2007-05-27 |                ),' at line 4
+mysql> INSERT INTO student (id, name, work_date, daily_typing_pages)
+    -> VALUES
+    -> (1, 'John', '2007-01-24', 250),
+    -> (2, 'Ram', '2007-05-27', 220),
+    -> (3, 'Jack', '2007-05-06', 170),
+    -> (3, 'Jack', '2007-04-06', 100),
+    -> (4, 'Jill', '2007-04-06', 220),
+    -> (5, 'Zara', '2007-06-06', 300),
+    -> (5, 'Zara', '2007-02-06', 350);
+ERROR 1054 (42S22): Unknown column 'work_date' in 'field list'
+mysql> ALTER TABLE employee_table
+    -> MODIFY id INT;
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee_table;
++--------------------+-------------+------+-----+---------+-------+
+| Field              | Type        | Null | Key | Default | Extra |
++--------------------+-------------+------+-----+---------+-------+
+| id                 | int         | NO   | PRI | NULL    |       |
+| name               | varchar(30) | YES  |     | NULL    |       |
+| work_date          | date        | YES  |     | NULL    |       |
+| daily_typing_pages | int         | YES  |     | NULL    |       |
++--------------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO student (id, name, work_date, daily_typing_pages)
+    -> VALUES
+    -> (1, 'John', '2007-01-24', 250),
+    -> (2, 'Ram', '2007-05-27', 220),
+    -> (3, 'Jack', '2007-05-06', 170),
+    -> (3, 'Jack', '2007-04-06', 100),
+    -> (4, 'Jill', '2007-04-06', 220),
+    -> (5, 'Zara', '2007-06-06', 300),
+    -> (5, 'Zara', '2007-02-06', 350);
+ERROR 1054 (42S22): Unknown column 'work_date' in 'field list'
+mysql> SHOW COLUMNS FROM employee_table;
++--------------------+-------------+------+-----+---------+-------+
+| Field              | Type        | Null | Key | Default | Extra |
++--------------------+-------------+------+-----+---------+-------+
+| id                 | int         | NO   | PRI | NULL    |       |
+| name               | varchar(30) | YES  |     | NULL    |       |
+| work_date          | date        | YES  |     | NULL    |       |
+| daily_typing_pages | int         | YES  |     | NULL    |       |
++--------------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO employee_table (id, name, work_date, daily_typing_pages)
+    -> VALUES
+    -> (1, 'John', '2007-01-24', 250),
+    -> (2, 'Ram', '2007-05-27', 220),
+    -> (3, 'Jack', '2007-05-06', 170),
+    -> (3, 'Jack', '2007-04-06', 100),
+    -> (4, 'Jill', '2007-04-06', 220),
+    -> (5, 'Zara', '2007-06-06', 300),
+    -> (5, 'Zara', '2007-02-06', 350);
+ERROR 1062 (23000): Duplicate entry '3' for key 'employee_table.PRIMARY'
+mysql> alter table employee_table
+    -> drop primary key;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee_table;
++--------------------+-------------+------+-----+---------+-------+
+| Field              | Type        | Null | Key | Default | Extra |
++--------------------+-------------+------+-----+---------+-------+
+| id                 | int         | NO   |     | NULL    |       |
+| name               | varchar(30) | YES  |     | NULL    |       |
+| work_date          | date        | YES  |     | NULL    |       |
+| daily_typing_pages | int         | YES  |     | NULL    |       |
++--------------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO employee_table (id, name, work_date, daily_typing_pages)
+    -> VALUES
+    -> (1, 'John', '2007-01-24', 250),
+    -> (2, 'Ram', '2007-05-27', 220),
+    -> (3, 'Jack', '2007-05-06', 170),
+    -> (3, 'Jack', '2007-04-06', 100),
+    -> (4, 'Jill', '2007-04-06', 220),
+    -> (5, 'Zara', '2007-06-06', 300),
+    -> (5, 'Zara', '2007-02-06', 350);
+Query OK, 7 rows affected (0.02 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_table;
++----+------+------------+--------------------+
+| id | name | work_date  | daily_typing_pages |
++----+------+------------+--------------------+
+|  1 | John | 2007-01-24 |                250 |
+|  2 | Ram  | 2007-05-27 |                220 |
+|  3 | Jack | 2007-05-06 |                170 |
+|  3 | Jack | 2007-04-06 |                100 |
+|  4 | Jill | 2007-04-06 |                220 |
+|  5 | Zara | 2007-06-06 |                300 |
+|  5 | Zara | 2007-02-06 |                350 |
++----+------+------------+--------------------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT COUNT(*) FROM employee_tbl ;
+ERROR 1146 (42S02): Table 'bhanu.employee_tbl' doesn't exist
+mysql> SELECT COUNT(*) FROM employee_table ;
++----------+
+| COUNT(*) |
++----------+
+|        7 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> >SELECT COUNT(*) FROM employee_tbl
+    -> SELECT COUNT(*) FROM employee_table WHERE name="Zara";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '>SELECT COUNT(*) FROM employee_tbl
+SELECT COUNT(*) FROM employee_table WHERE na' at line 1
+mysql> SELECT COUNT(*) FROM employee_table
+    -> where name='zara';
++----------+
+| COUNT(*) |
++----------+
+|        2 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> SELECT MAX(daily_typing_pages)
+    -> from employee_table;
++-------------------------+
+| MAX(daily_typing_pages) |
++-------------------------+
+|                     350 |
++-------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT id, name, MAX(daily_typing_pages)
+    -> FROM employee_table GROUP BY name;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'bhanu.employee_table.id' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql>  SELECT name, MAX(daily_typing_pages)
+    ->  FROM employee_table GROUP BY name;
++------+-------------------------+
+| name | MAX(daily_typing_pages) |
++------+-------------------------+
+| John |                     250 |
+| Ram  |                     220 |
+| Jack |                     170 |
+| Jill |                     220 |
+| Zara |                     350 |
++------+-------------------------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT MIN(daily_typing_pages) least, MAX(daily_typing_pages) max
+    -> FROM employee_table;
++-------+------+
+| least | max  |
++-------+------+
+|   100 |  350 |
++-------+------+
+1 row in set (0.00 sec)
+
+mysql> SELECT AVG(daily_typing_pages)
+    -> FROM employee_table;
++-------------------------+
+| AVG(daily_typing_pages) |
++-------------------------+
+|                230.0000 |
++-------------------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT name, AVG(daily_typing_pages)
+    -> FROM employee_table GROUP BY name;
++------+-------------------------+
+| name | AVG(daily_typing_pages) |
++------+-------------------------+
+| John |                250.0000 |
+| Ram  |                220.0000 |
+| Jack |                135.0000 |
+| Jill |                220.0000 |
+| Zara |                325.0000 |
++------+-------------------------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT SUM(daily_typing_pages)
+    -> FROM employee_table;
++-------------------------+
+| SUM(daily_typing_pages) |
++-------------------------+
+|                    1610 |
++-------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT name, SQRT(daily_typing_pages)
+    -> FROM employee_table;
++------+--------------------------+
+| name | SQRT(daily_typing_pages) |
++------+--------------------------+
+| John |       15.811388300841896 |
+| Ram  |       14.832396974191326 |
+| Jack |       13.038404810405298 |
+| Jack |                       10 |
+| Jill |       14.832396974191326 |
+| Zara |       17.320508075688775 |
+| Zara |       18.708286933869708 |
++------+--------------------------+
+7 rows in set (0.01 sec)
+
+mysql> SELECT * FROM employee_table ORDER BY RAND();
++----+------+------------+--------------------+
+| id | name | work_date  | daily_typing_pages |
++----+------+------------+--------------------+
+|  5 | Zara | 2007-06-06 |                300 |
+|  4 | Jill | 2007-04-06 |                220 |
+|  3 | Jack | 2007-05-06 |                170 |
+|  2 | Ram  | 2007-05-27 |                220 |
+|  3 | Jack | 2007-04-06 |                100 |
+|  5 | Zara | 2007-02-06 |                350 |
+|  1 | John | 2007-01-24 |                250 |
++----+------+------------+--------------------+
+7 rows in set (0.01 sec)
+
+mysql> SELECT * FROM employee_table ORDER BY RAND();
++----+------+------------+--------------------+
+| id | name | work_date  | daily_typing_pages |
++----+------+------------+--------------------+
+|  4 | Jill | 2007-04-06 |                220 |
+|  3 | Jack | 2007-04-06 |                100 |
+|  3 | Jack | 2007-05-06 |                170 |
+|  2 | Ram  | 2007-05-27 |                220 |
+|  1 | John | 2007-01-24 |                250 |
+|  5 | Zara | 2007-02-06 |                350 |
+|  5 | Zara | 2007-06-06 |                300 |
++----+------+------------+--------------------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT CONCAT(id, name, work_date)
+    ->     -> FROM employee_table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> FROM employee_table' at line 2
+mysql> SELECT CONCAT(id, name, work_date)
+    -> FROM employee_table;
++-----------------------------+
+| CONCAT(id, name, work_date) |
++-----------------------------+
+| 1John2007-01-24             |
+| 2Ram2007-05-27              |
+| 3Jack2007-05-06             |
+| 3Jack2007-04-06             |
+| 4Jill2007-04-06             |
+| 5Zara2007-06-06             |
+| 5Zara2007-02-06             |
++-----------------------------+
+7 rows in set (0.01 sec)
+
+mysql>
